@@ -1,81 +1,98 @@
 package com.angel.CombatPlatformer.entity.player;
 
-import com.angel.CombatPlatformer.util.Rect;
+import com.angel.CombatPlatformer.component.Animator;
 import com.angel.CombatPlatformer.util.io.KL;
-import com.angel.CombatPlatformer.util.io.ML;
+import com.angel.CombatPlatformer.window.WindowConstants;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 
 
 public class Player {
-    /**
-     * <p>
-     * Saves the position as a Point2D.Double object
-     *</p>
-     */
+    private KL keyListener = KL.getKeyListener();
     private Point2D.Double position = null;
 
+    private boolean facingLeft = false;
 
-    /**<p>
-     * Saves a pointer to the singleton instance of the KeyListener class
-     *</p>
-     */
-    private KL keyListener = KL.getKeyListener();
+    private boolean attacking = false;
+    private double attackingTime = 0;
+    private double attackDuration = 0.59;
+
+    private Animator animator;
 
     public Player(){
-        position = new Point2D.Double(10.0,20.0);
+        position = new Point2D.Double(WindowConstants.SCREEN_WIDTH/2.0 ,WindowConstants.SCREEN_HEIGHT/2.0);
+
+
+
+        animator = new Animator();
+        animator.createAnimation(
+                PlayerConstants.idleAnimationID,
+                PlayerConstants.idle_animationPath,
+                PlayerConstants.idle_animationPos,
+                PlayerConstants.idle_xOffset,
+                PlayerConstants.idle_yOffset,
+                PlayerConstants.idle_ScaleFactor
+        );
+        animator.createAnimation(
+                PlayerConstants.Attack1AnimationID,
+                PlayerConstants.Attack1_animationPath,
+                PlayerConstants.Attack1_animationPos,
+                PlayerConstants.Attack1_xOffset,
+                PlayerConstants.Attack1_yOffset,
+                PlayerConstants.Attack1_ScaleFactor
+        );
     }
 
 
-    public void draw(Graphics g){
-
-        g.setColor(PlayerConstants.characterColor);
-        g.fillRect((int) position.x, (int) position.y, PlayerConstants.PLAYER_WIDTH, PlayerConstants.PLAYER_HEIGHT);
-
-    }
 
 
-    public void update(double deltaTime){
+    private void HandleInput(double deltaTime){
 
-        HandleMovement(deltaTime);
+        if(attacking){
+            attackingTime += deltaTime;
+            if (attackingTime>= attackDuration){
+                animator.changeAnimationTo(PlayerConstants.idleAnimationID);
+                attacking = false;
+                attackingTime = 0;
+            }
+        }else if (keyListener.isKeyDown(KeyEvent.VK_RIGHT)){
+            animator.changeAnimationTo(PlayerConstants.Attack1AnimationID);
+            facingLeft = false;
+            attacking = true;
+        } else if (keyListener.isKeyDown(KeyEvent.VK_LEFT)) {
+            animator.changeAnimationTo(PlayerConstants.Attack1AnimationID);
+            facingLeft = true;
+            attacking = true;
+        } else{
+            Point2D.Double movementVector = GetMovementVector();
 
-    }
+
+            if(movementVector.x == 1.0 && movementVector.y == 1.0){
+                double movementVectorMagnitude = Math.sqrt(movementVector.x * movementVector.x + movementVector.y * movementVector.y);
+
+                movementVector.x = movementVector.x / movementVectorMagnitude;
+                movementVector.y = movementVector.y / movementVectorMagnitude;
+            }
 
 
+            position.x += movementVector.x * PlayerConstants.PLAYER_SPEED * deltaTime;
+            position.y += movementVector.y * PlayerConstants.PLAYER_SPEED * deltaTime;
+            if (movementVector.x < 0){
+                facingLeft = true;
+            }
+            if (movementVector.x > 0){
+                facingLeft = false;
+            }
 
-    /**
-     * <p>
-     * Uses the GetMovementVector() function to get information on how to move the player
-     * <br>
-     * Then normalizes that vector and moves the character by the unit vector multiplied by delta time and the player speed
-     *</p>
-     * @param deltaTime gets time since last frame to keep speed constant
-     */
-    private void HandleMovement(double deltaTime){
-        Point2D.Double movementVector = GetMovementVector();
-
-
-        if(movementVector.x == 1.0 && movementVector.y == 1.0){
-            double movementVectorMagnitude = Math.sqrt(movementVector.x * movementVector.x + movementVector.y * movementVector.y);
-
-            movementVector.x = movementVector.x / movementVectorMagnitude;
-            movementVector.y = movementVector.y / movementVectorMagnitude;
         }
 
 
-        position.x += movementVector.x * PlayerConstants.PLAYER_SPEED * deltaTime;
-        position.y += movementVector.y * PlayerConstants.PLAYER_SPEED * deltaTime;
 
     }
 
-    /**
-     * <p>
-     * Uses the KeyListener to get the information of how to move the player
-     *</p>
-     * @return Point2D.Double returns the movement keys pressed as a vector to move the player by
-     */
     private Point2D.Double GetMovementVector(){
 
         Point2D.Double movementVector = new Point2D.Double();
@@ -96,7 +113,28 @@ public class Player {
         return movementVector;
     }
 
+    public void draw(Graphics g){
 
+        g.setColor(PlayerConstants.characterColor);
+        g.drawRect((int) position.x, (int) position.y, PlayerConstants.PLAYER_WIDTH, PlayerConstants.PLAYER_HEIGHT);
+
+        if(animator.hasAnimations()){
+            if (!facingLeft){
+                animator.RenderCurrentSprite(g, (int) position.x, (int) position.y);
+            }else{
+                animator.RenderCurrentSpriteFlipVer(g, (int) position.x, (int) position.y);
+            }
+        }
+
+
+    }
+
+
+    public void update(double deltaTime){
+
+        HandleInput(deltaTime);
+        animator.update(deltaTime);
+    }
 
 
 

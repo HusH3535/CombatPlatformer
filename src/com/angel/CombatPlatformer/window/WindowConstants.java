@@ -2,8 +2,8 @@ package com.angel.CombatPlatformer.window;
 
 public class WindowConstants {
 
-    public static final int SCREEN_WIDTH = 800;
-    public static final int SCREEN_HEIGHT = 450;
+    public static final int SCREEN_WIDTH = 1920;
+    public static final int SCREEN_HEIGHT = 1080;
 
     public static int INSET_SIZE = 0;
 
