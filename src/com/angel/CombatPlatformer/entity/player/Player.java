@@ -7,14 +7,17 @@ import com.angel.CombatPlatformer.window.WindowConstants;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 
 
 public class Player {
     private KL keyListener = KL.getKeyListener();
     private Point2D.Double position = null;
 
+    private Player_State state = Player_State.Default;
+
     private boolean facingLeft = false;
+
+    private boolean running = false;
 
     private boolean attacking = false;
     private double attackingTime = 0;
@@ -29,69 +32,94 @@ public class Player {
 
         animator = new Animator();
         animator.createAnimation(
-                PlayerConstants.idleAnimationID,
-                PlayerConstants.idle_animationPath,
-                PlayerConstants.idle_animationPos,
-                PlayerConstants.idle_xOffset,
-                PlayerConstants.idle_yOffset,
-                PlayerConstants.idle_ScaleFactor
+                PlayerConstants.IDLE_ANIMATION_ID,
+                PlayerConstants.IDLE_ANIMATION_PATH,
+                PlayerConstants.IDLE_ANIMATION_POS,
+                PlayerConstants.IDLE_X_OFFSET,
+                PlayerConstants.IDLE_Y_OFFSET,
+                PlayerConstants.IDLE_SCALE_FACTOR
         );
         animator.createAnimation(
-                PlayerConstants.Attack1AnimationID,
-                PlayerConstants.Attack1_animationPath,
-                PlayerConstants.Attack1_animationPos,
-                PlayerConstants.Attack1_xOffset,
-                PlayerConstants.Attack1_yOffset,
-                PlayerConstants.Attack1_ScaleFactor
+                PlayerConstants.RUN_ANIMATION_ID,
+                PlayerConstants.RUN_ANIMATION_PATH,
+                PlayerConstants.RUN_ANIMATION_POS,
+                PlayerConstants.RUN_X_OFFSET,
+                PlayerConstants.RUN_Y_OFFSET,
+                PlayerConstants.RUN_SCALE_FACTOR
+        );
+        animator.createAnimation(
+                PlayerConstants.ATTACK_1_ANIMATION_ID,
+                PlayerConstants.ATTACK_1_ANIMATION_PATH,
+                PlayerConstants.ATTACK_1_ANIMATION_POS,
+                PlayerConstants.ATTACK_1_X_OFFSET,
+                PlayerConstants.ATTACK_1_Y_OFFSET,
+                PlayerConstants.ATTACK_1_SCALE_FACTOR
         );
     }
 
 
 
+    private void HandleInput(double deltaTime) {
+        
 
-    private void HandleInput(double deltaTime){
+        switch (state) {
+            case Attacking -> HandleAttackCD(deltaTime);
 
-        if(attacking){
-            attackingTime += deltaTime;
-            if (attackingTime>= attackDuration){
-                animator.changeAnimationTo(PlayerConstants.idleAnimationID);
-                attacking = false;
-                attackingTime = 0;
+
+
+            case OffGround -> {}
+
+
+
+            case Default -> {
+                if (keyListener.isKeyDown(KeyEvent.VK_RIGHT)) {
+                    animator.changeAnimationTo(PlayerConstants.ATTACK_1_ANIMATION_ID);
+                    facingLeft = false;
+                    state = Player_State.Attacking;
+                } else if (keyListener.isKeyDown(KeyEvent.VK_LEFT)) {
+                    animator.changeAnimationTo(PlayerConstants.ATTACK_1_ANIMATION_ID);
+                    facingLeft = true;
+                    state = Player_State.Attacking;
+                }else{
+                    HandleMovement(deltaTime);
+                }
             }
-        }else if (keyListener.isKeyDown(KeyEvent.VK_RIGHT)){
-            animator.changeAnimationTo(PlayerConstants.Attack1AnimationID);
-            facingLeft = false;
-            attacking = true;
-        } else if (keyListener.isKeyDown(KeyEvent.VK_LEFT)) {
-            animator.changeAnimationTo(PlayerConstants.Attack1AnimationID);
-            facingLeft = true;
-            attacking = true;
-        } else{
-            Point2D.Double movementVector = GetMovementVector();
+        }
+    }
 
+    private void HandleAttackCD(double deltaTime){
+        attackingTime += deltaTime;
+        if (attackingTime>= attackDuration){
+            animator.changeAnimationTo(PlayerConstants.IDLE_ANIMATION_ID);
+            state = Player_State.Default;
+            attackingTime = 0;
+        }
+    }
 
-            if(movementVector.x == 1.0 && movementVector.y == 1.0){
-                double movementVectorMagnitude = Math.sqrt(movementVector.x * movementVector.x + movementVector.y * movementVector.y);
+    private void HandleMovement(Double deltaTime){
+        Point2D.Double movementVector = GetMovementVector();
 
-                movementVector.x = movementVector.x / movementVectorMagnitude;
-                movementVector.y = movementVector.y / movementVectorMagnitude;
-            }
+        if(movementVector.x == 1.0 && movementVector.y == 1.0){
+            double movementVectorMagnitude = Math.sqrt(movementVector.x * movementVector.x + movementVector.y * movementVector.y);
 
-
-            position.x += movementVector.x * PlayerConstants.PLAYER_SPEED * deltaTime;
-            position.y += movementVector.y * PlayerConstants.PLAYER_SPEED * deltaTime;
-            if (movementVector.x < 0){
-                facingLeft = true;
-            }
-            if (movementVector.x > 0){
-                facingLeft = false;
-            }
-
+            movementVector.x = movementVector.x / movementVectorMagnitude;
+            movementVector.y = movementVector.y / movementVectorMagnitude;
         }
 
+        position.x += movementVector.x * PlayerConstants.PLAYER_SPEED * deltaTime;
+        position.y += movementVector.y * PlayerConstants.PLAYER_SPEED * deltaTime;
 
+        running = movementVector.x != 0;
 
+        if(running ){
+            animator.changeAnimationNotReset(PlayerConstants.RUN_ANIMATION_ID);
+        }else{
+            animator.changeAnimationTo(PlayerConstants.IDLE_ANIMATION_ID);
+        }
+
+        facingLeft = movementVector.x != 0?  movementVector.x < 0:  facingLeft;
     }
+
 
     private Point2D.Double GetMovementVector(){
 
@@ -131,7 +159,6 @@ public class Player {
 
 
     public void update(double deltaTime){
-
         HandleInput(deltaTime);
         animator.update(deltaTime);
     }

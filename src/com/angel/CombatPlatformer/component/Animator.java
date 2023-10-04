@@ -61,6 +61,12 @@ public class Animator extends Component{
        }
     }
 
+    public void changeAnimationNotReset(String AnimationName){
+        if(Animations.containsKey(AnimationName)){
+            currentAnimation = Animations.get(AnimationName);
+        }
+    }
+
     public double getFrameTime() {
         return frameTime;
     }
