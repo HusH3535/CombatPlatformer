@@ -99,6 +99,9 @@ public class Player {
     private void HandleMovement(Double deltaTime){
         Point2D.Double movementVector = GetMovementVector();
 
+        double previousPosX = position.x;
+        double previousPosY = position.y;
+
         if(movementVector.x == 1.0 && movementVector.y == 1.0){
             double movementVectorMagnitude = Math.sqrt(movementVector.x * movementVector.x + movementVector.y * movementVector.y);
 
@@ -108,6 +111,17 @@ public class Player {
 
         position.x += movementVector.x * PlayerConstants.PLAYER_SPEED * deltaTime;
         position.y += movementVector.y * PlayerConstants.PLAYER_SPEED * deltaTime;
+
+        boolean ScreenBottomBound = position.y + PlayerConstants.PLAYER_HEIGHT >= WindowConstants.SCREEN_HEIGHT,
+                ScreenTopBound    = position.y <= 0,
+                ScreenLeftBound   = position.x <= 0,
+                ScreenRightBound  = position.x + PlayerConstants.PLAYER_WIDTH >= WindowConstants.SCREEN_WIDTH;
+
+        position.x = ScreenLeftBound   ? previousPosX: position.x;
+        position.x = ScreenRightBound  ? previousPosX: position.x;
+        position.y = ScreenTopBound    ? previousPosY: position.y;
+        position.y = ScreenBottomBound ? previousPosY: position.y;
+
 
         running = movementVector.x != 0;
 
