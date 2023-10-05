@@ -15,11 +15,16 @@ public class Animator extends Component{
     private Animation currentAnimation = null;
     private BufferedImage currentFrame = null;
     private int currentFrameIndex = 0;
+    private double defaultFrameTime = 0.15;
     private double frameTime = 0.15;
     private double lastFrame = 0;
 
 
     public Animator(){
+    }
+    public Animator(double defaultFrameTime){
+        this.defaultFrameTime    = defaultFrameTime;
+        this.frameTime           = defaultFrameTime;
     }
 
     public void createAnimation(String AnimationName, String path, Rect[] rects){
@@ -62,9 +67,27 @@ public class Animator extends Component{
     }
 
     public void changeAnimationNotReset(String AnimationName){
+        this.frameTime = defaultFrameTime;
         if(Animations.containsKey(AnimationName)){
             currentAnimation = Animations.get(AnimationName);
         }
+    }
+
+    public void changeAnimationTo(String AnimationName, double frameTime){
+
+        this.setFrameTime(frameTime);
+        if(Animations.containsKey(AnimationName)){
+            currentAnimation = Animations.get(AnimationName);
+            currentFrameIndex = 0;
+        }
+
+    }
+
+    public void changeAnimationNotReset(String AnimationName, double frameTime){
+        if(Animations.containsKey(AnimationName)){
+            currentAnimation = Animations.get(AnimationName);
+        }
+        this.setFrameTime(frameTime);
     }
 
     public double getFrameTime() {

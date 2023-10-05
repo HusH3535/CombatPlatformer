@@ -19,18 +19,17 @@ public class Player {
 
     private boolean running = false;
 
-    private boolean attacking = false;
+    private double y_Velocity = 0.0;
+
     private double attackingTime = 0;
-    private double attackDuration = 0.59;
+    private double attackSpeed = PlayerConstants.STARTING_ATTACKSPEED;
 
     private Animator animator;
 
     public Player(){
         position = new Point2D.Double(WindowConstants.SCREEN_WIDTH/2.0 ,WindowConstants.SCREEN_HEIGHT/2.0);
 
-
-
-        animator = new Animator();
+        animator = new Animator(0.075);
         animator.createAnimation(
                 PlayerConstants.IDLE_ANIMATION_ID,
                 PlayerConstants.IDLE_ANIMATION_PATH,
@@ -55,9 +54,31 @@ public class Player {
                 PlayerConstants.ATTACK_1_Y_OFFSET,
                 PlayerConstants.ATTACK_1_SCALE_FACTOR
         );
+        animator.createAnimation(
+                PlayerConstants.ATTACK_UP_ANIMATION_ID,
+                PlayerConstants.ATTACK_UP_ANIMATION_PATH,
+                PlayerConstants.ATTACK_UP_ANIMATION_POS,
+                PlayerConstants.ATTACK_UP_X_OFFSET,
+                PlayerConstants.ATTACK_UP_Y_OFFSET,
+                PlayerConstants.ATTACK_UP_SCALE_FACTOR
+        );
+        animator.createAnimation(
+                PlayerConstants.JUMP_ANIMATION_ID,
+                PlayerConstants.JUMP_ANIMATION_PATH,
+                PlayerConstants.JUMP_ANIMATION_POS,
+                PlayerConstants.JUMP_X_OFFSET,
+                PlayerConstants.JUMP_Y_OFFSET,
+                PlayerConstants.JUMP_SCALE_FACTOR
+        );
+        animator.createAnimation(
+                PlayerConstants.FALL_ANIMATION_ID,
+                PlayerConstants.FALL_ANIMATION_PATH,
+                PlayerConstants.FALL_ANIMATION_POS,
+                PlayerConstants.FALL_X_OFFSET,
+                PlayerConstants.FALL_Y_OFFSET,
+                PlayerConstants.FALL_SCALE_FACTOR
+        );
     }
-
-
 
     private void HandleInput(double deltaTime) {
         
@@ -67,19 +88,36 @@ public class Player {
 
 
 
-            case OffGround -> {}
+            case OffGround -> {
+                HandleMovement(deltaTime);
+            }
 
 
 
             case Default -> {
                 if (keyListener.isKeyDown(KeyEvent.VK_RIGHT)) {
-                    animator.changeAnimationTo(PlayerConstants.ATTACK_1_ANIMATION_ID);
+
+                    SetAttacking(
+                            PlayerConstants.ATTACK_1_ANIMATION_ID,
+                            (attackSpeed /PlayerConstants.ATTACK_1_ANIMATION_POS.length)
+                    );
+
                     facingLeft = false;
-                    state = Player_State.Attacking;
                 } else if (keyListener.isKeyDown(KeyEvent.VK_LEFT)) {
-                    animator.changeAnimationTo(PlayerConstants.ATTACK_1_ANIMATION_ID);
+
+                    SetAttacking(
+                            PlayerConstants.ATTACK_1_ANIMATION_ID,
+                            (attackSpeed /PlayerConstants.ATTACK_1_ANIMATION_POS.length)
+                    );
+
                     facingLeft = true;
-                    state = Player_State.Attacking;
+                }else if(keyListener.isKeyDown(KeyEvent.VK_UP)) {
+
+                    SetAttacking(
+                            PlayerConstants.ATTACK_UP_ANIMATION_ID,
+                            (attackSpeed * 1.5 /PlayerConstants.ATTACK_UP_ANIMATION_POS.length)
+                    );
+
                 }else{
                     HandleMovement(deltaTime);
                 }
@@ -87,9 +125,15 @@ public class Player {
         }
     }
 
+    private void SetAttacking(String animationID, double frameTime){
+        animator.changeAnimationTo(animationID,frameTime);
+        state = Player_State.Attacking;
+    }
+
+
     private void HandleAttackCD(double deltaTime){
         attackingTime += deltaTime;
-        if (attackingTime>= attackDuration){
+        if (attackingTime>= attackSpeed){
             animator.changeAnimationTo(PlayerConstants.IDLE_ANIMATION_ID);
             state = Player_State.Default;
             attackingTime = 0;
@@ -98,6 +142,10 @@ public class Player {
 
     private void HandleMovement(Double deltaTime){
         Point2D.Double movementVector = GetMovementVector();
+
+        boolean playerGrounded = position.y + PlayerConstants.PLAYER_HEIGHT >= WindowConstants.SCREEN_HEIGHT;
+
+        state = !playerGrounded ? Player_State.OffGround : Player_State.Default ;
 
         double previousPosX = position.x;
         double previousPosY = position.y;
@@ -109,30 +157,55 @@ public class Player {
             movementVector.y = movementVector.y / movementVectorMagnitude;
         }
 
+        if (state == Player_State.OffGround){
+            y_Velocity += PlayerConstants.GRAVITY_ACCELERATION * deltaTime;
+        }else {
+            y_Velocity = movementVector.y < 0 ? PlayerConstants.JUMPING_VELOCITY : y_Velocity + PlayerConstants.GRAVITY_ACCELERATION * deltaTime;
+        }
+
+        y_Velocity = Math.min(y_Velocity, PlayerConstants.MAX_GRAVITY_VELOCITY);
+
+
+
         position.x += movementVector.x * PlayerConstants.PLAYER_SPEED * deltaTime;
-        position.y += movementVector.y * PlayerConstants.PLAYER_SPEED * deltaTime;
+        position.y += y_Velocity * PlayerConstants.PLAYER_SPEED * deltaTime;
 
         boolean ScreenBottomBound = position.y + PlayerConstants.PLAYER_HEIGHT >= WindowConstants.SCREEN_HEIGHT,
-                ScreenTopBound    = position.y <= 0,
+                ScreenTopBound    = position.y <= WindowConstants.INSET_SIZE,
                 ScreenLeftBound   = position.x <= 0,
                 ScreenRightBound  = position.x + PlayerConstants.PLAYER_WIDTH >= WindowConstants.SCREEN_WIDTH;
 
         position.x = ScreenLeftBound   ? previousPosX: position.x;
         position.x = ScreenRightBound  ? previousPosX: position.x;
         position.y = ScreenTopBound    ? previousPosY: position.y;
-        position.y = ScreenBottomBound ? previousPosY: position.y;
+        position.y = ScreenBottomBound ? WindowConstants.SCREEN_HEIGHT - PlayerConstants.PLAYER_HEIGHT: position.y;
 
 
         running = movementVector.x != 0;
 
-        if(running ){
-            animator.changeAnimationNotReset(PlayerConstants.RUN_ANIMATION_ID);
-        }else{
-            animator.changeAnimationTo(PlayerConstants.IDLE_ANIMATION_ID);
+        switch (state) {
+            case Default -> {
+                if(running ){
+                    animator.changeAnimationNotReset(PlayerConstants.RUN_ANIMATION_ID);
+                }else{
+                    animator.changeAnimationTo(PlayerConstants.IDLE_ANIMATION_ID);
+                }
+            }
+
+            case OffGround -> {
+                if (y_Velocity < 0) {
+                    animator.changeAnimationTo(PlayerConstants.JUMP_ANIMATION_ID);
+                } else {
+                    animator.changeAnimationTo(PlayerConstants.FALL_ANIMATION_ID);
+                }
+            }
         }
+
+
 
         facingLeft = movementVector.x != 0?  movementVector.x < 0:  facingLeft;
     }
+
 
 
     private Point2D.Double GetMovementVector(){

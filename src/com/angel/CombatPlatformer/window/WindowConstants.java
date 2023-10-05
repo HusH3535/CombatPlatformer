@@ -2,14 +2,14 @@ package com.angel.CombatPlatformer.window;
 
 public class WindowConstants {
 
-    public static int SCREEN_WIDTH = 1920/2;
+    public static int SCREEN_WIDTH = 1920;
     public static int SCREEN_HEIGHT = (int) (SCREEN_WIDTH * 0.5625);
 
     public static double SCREEN_UNIT = SCREEN_WIDTH * 0.01;
 
     public static int INSET_SIZE = 0;
 
-    public static final String SCREEN_TITLE = "UntitledRoguelite";
+    public static final String SCREEN_TITLE = "CombatPlatformer";
 
 
 

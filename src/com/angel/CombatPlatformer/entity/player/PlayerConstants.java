@@ -20,9 +20,15 @@ public class PlayerConstants {
     //==============================================================================
     public static final double PLAYER_SPEED = WindowConstants.SCREEN_WIDTH*(1.0/4);
     public static final Color characterColor = Color.GREEN;
-    public static double MAX_GRAVITY_ACCELERATION = 9.81;
-    public static double GRAVITY_ACCELERATION = 0.981;
 
+
+    public static double MAX_GRAVITY_VELOCITY = WindowConstants.SCREEN_UNIT;
+    public static double GRAVITY_ACCELERATION = MAX_GRAVITY_VELOCITY/2;
+
+    public static double JUMPING_VELOCITY = -WindowConstants.SCREEN_UNIT * 0.2;
+
+
+    public static final double  STARTING_ATTACKSPEED = 0.3;
 
     //endregion
     //200px per second
@@ -34,9 +40,12 @@ public class PlayerConstants {
     //region sprite variables
     //==============================================================================
 
-    public final static String IDLE_ANIMATION_ID = "idle";
-    public final static String RUN_ANIMATION_ID = "Run";
-    public final static String ATTACK_1_ANIMATION_ID = "Attack1";
+    public final static String IDLE_ANIMATION_ID        = "idle";
+    public final static String RUN_ANIMATION_ID         = "Run";
+    public final static String ATTACK_1_ANIMATION_ID    = "Attack1";
+    public final static String ATTACK_UP_ANIMATION_ID    = "AttackUp";
+    public final static String JUMP_ANIMATION_ID       = "Jump";
+    public final static String FALL_ANIMATION_ID       = "FALL";
 
 
     public final static int IDLE_X_OFFSET = (int) (- 10 * WindowConstants.SCREEN_UNIT);
@@ -79,6 +88,36 @@ public class PlayerConstants {
             new Rect(160*2,0,160,111),
             new Rect(160*3,0,160,111)
     };
+
+    public final static int ATTACK_UP_X_OFFSET = (int) (- 10 * WindowConstants.SCREEN_UNIT);
+    public final static int ATTACK_UP_Y_OFFSET = (int) (- 8  * WindowConstants.SCREEN_UNIT);;
+    public final static double ATTACK_UP_SCALE_FACTOR = WindowConstants.SCREEN_UNIT / 6 ;
+    public final static String ATTACK_UP_ANIMATION_PATH = "src/com/angel/CombatPlatformer/assets/mainCharacter/Attack3.png";
+    public final static Rect[] ATTACK_UP_ANIMATION_POS = {
+            new Rect(160*0,0,160,111),
+            new Rect(160*1,0,160,111),
+            new Rect(160*2,0,160,111),
+            new Rect(160*3,0,160,111)
+    };
+
+    public final static int JUMP_X_OFFSET = (int) (- 10 * WindowConstants.SCREEN_UNIT);
+    public final static int JUMP_Y_OFFSET = (int) (- 8  * WindowConstants.SCREEN_UNIT);;
+    public final static double JUMP_SCALE_FACTOR = WindowConstants.SCREEN_UNIT / 6 ;
+    public final static String JUMP_ANIMATION_PATH = "src/com/angel/CombatPlatformer/assets/mainCharacter/Jump.png";
+    public final static Rect[] JUMP_ANIMATION_POS = {
+            new Rect(160*0,0,160,111),
+            new Rect(160*1,0,160,111)
+    };
+
+    public final static int FALL_X_OFFSET = (int) (- 10 * WindowConstants.SCREEN_UNIT);
+    public final static int FALL_Y_OFFSET = (int) (- 8  * WindowConstants.SCREEN_UNIT);;
+    public final static double FALL_SCALE_FACTOR = WindowConstants.SCREEN_UNIT / 6 ;
+    public final static String FALL_ANIMATION_PATH = "src/com/angel/CombatPlatformer/assets/mainCharacter/Fall.png";
+    public final static Rect[] FALL_ANIMATION_POS = {
+            new Rect(160*0,0,160,111),
+            new Rect(160*1,0,160,111)
+    };
+
 
 
 
