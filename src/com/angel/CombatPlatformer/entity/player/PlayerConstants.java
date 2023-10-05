@@ -19,7 +19,7 @@ public class PlayerConstants {
 
     //region movement variables
     //==============================================================================
-    public static final double PLAYER_SPEED = WindowConstants.SCREEN_WIDTH*(1.0/4);
+    public static final double PLAYER_SPEED = WindowConstants.SCREEN_WIDTH*(0.35);
     public static final Color characterColor = Color.GREEN;
 
 
