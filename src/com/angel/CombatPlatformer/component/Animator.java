@@ -47,16 +47,21 @@ public class Animator extends Component{
         Animations.get(AnimationName).yOffset = yOffset;
     }
 
-    public void createAnimation(String AnimationName, String path, Rect[] rects, int xOffset, int yOffset, double scaleFactor){
+    public void createAnimation(String animation_ID, String path, Rect[] rects, int xOffset, int yOffset, double scaleFactor){
 
-        Animations.put(AnimationName, new Animation(path, rects));
+        Animations.put(animation_ID, new Animation(path, rects, xOffset, yOffset, scaleFactor));
         if (currentAnimation == null){
-            currentAnimation = Animations.get(AnimationName);
+            currentAnimation = Animations.get(animation_ID);
             currentFrame = currentAnimation.getFrame(currentFrameIndex);
         }
-        Animations.get(AnimationName).xOffset = xOffset;
-        Animations.get(AnimationName).yOffset = yOffset;
-        Animations.get(AnimationName).scaleFactor = scaleFactor;
+    }
+
+    public void addAnimation(Animation animation, String animation_ID){
+        Animations.put(animation_ID,animation);
+        if (currentAnimation == null){
+            currentAnimation = Animations.get(animation_ID);
+            currentFrame = currentAnimation.getFrame(currentFrameIndex);
+        }
     }
 
     public void changeAnimationTo(String AnimationName){

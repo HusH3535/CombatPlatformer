@@ -22,7 +22,9 @@ public class Player {
     private double y_Velocity = 0.0;
 
     private double attackingTime = 0;
+
     private double attackSpeed = PlayerConstants.STARTING_ATTACKSPEED;
+    private double currentAttack_Speed = attackSpeed;
 
     private Animator animator;
 
@@ -30,54 +32,14 @@ public class Player {
         position = new Point2D.Double(WindowConstants.SCREEN_WIDTH/2.0 ,WindowConstants.SCREEN_HEIGHT/2.0);
 
         animator = new Animator(0.075);
-        animator.createAnimation(
-                PlayerConstants.IDLE_ANIMATION_ID,
-                PlayerConstants.IDLE_ANIMATION_PATH,
-                PlayerConstants.IDLE_ANIMATION_POS,
-                PlayerConstants.IDLE_X_OFFSET,
-                PlayerConstants.IDLE_Y_OFFSET,
-                PlayerConstants.IDLE_SCALE_FACTOR
-        );
-        animator.createAnimation(
-                PlayerConstants.RUN_ANIMATION_ID,
-                PlayerConstants.RUN_ANIMATION_PATH,
-                PlayerConstants.RUN_ANIMATION_POS,
-                PlayerConstants.RUN_X_OFFSET,
-                PlayerConstants.RUN_Y_OFFSET,
-                PlayerConstants.RUN_SCALE_FACTOR
-        );
-        animator.createAnimation(
-                PlayerConstants.ATTACK_1_ANIMATION_ID,
-                PlayerConstants.ATTACK_1_ANIMATION_PATH,
-                PlayerConstants.ATTACK_1_ANIMATION_POS,
-                PlayerConstants.ATTACK_1_X_OFFSET,
-                PlayerConstants.ATTACK_1_Y_OFFSET,
-                PlayerConstants.ATTACK_1_SCALE_FACTOR
-        );
-        animator.createAnimation(
-                PlayerConstants.ATTACK_UP_ANIMATION_ID,
-                PlayerConstants.ATTACK_UP_ANIMATION_PATH,
-                PlayerConstants.ATTACK_UP_ANIMATION_POS,
-                PlayerConstants.ATTACK_UP_X_OFFSET,
-                PlayerConstants.ATTACK_UP_Y_OFFSET,
-                PlayerConstants.ATTACK_UP_SCALE_FACTOR
-        );
-        animator.createAnimation(
-                PlayerConstants.JUMP_ANIMATION_ID,
-                PlayerConstants.JUMP_ANIMATION_PATH,
-                PlayerConstants.JUMP_ANIMATION_POS,
-                PlayerConstants.JUMP_X_OFFSET,
-                PlayerConstants.JUMP_Y_OFFSET,
-                PlayerConstants.JUMP_SCALE_FACTOR
-        );
-        animator.createAnimation(
-                PlayerConstants.FALL_ANIMATION_ID,
-                PlayerConstants.FALL_ANIMATION_PATH,
-                PlayerConstants.FALL_ANIMATION_POS,
-                PlayerConstants.FALL_X_OFFSET,
-                PlayerConstants.FALL_Y_OFFSET,
-                PlayerConstants.FALL_SCALE_FACTOR
-        );
+
+        animator.addAnimation(PlayerConstants.IDLE_ANIMATION,       PlayerConstants.IDLE_ANIMATION_ID);
+        animator.addAnimation(PlayerConstants.RUN_ANIMATION,        PlayerConstants.RUN_ANIMATION_ID);
+        animator.addAnimation(PlayerConstants.ATTACK_1_ANIMATION,   PlayerConstants.ATTACK_1_ANIMATION_ID);
+        animator.addAnimation(PlayerConstants.ATTACK_UP_ANIMATION,  PlayerConstants.ATTACK_UP_ANIMATION_ID);
+        animator.addAnimation(PlayerConstants.JUMP_ANIMATION,       PlayerConstants.JUMP_ANIMATION_ID);
+        animator.addAnimation(PlayerConstants.FALL_ANIMATION,       PlayerConstants.FALL_ANIMATION_ID);
+
     }
 
     private void HandleInput(double deltaTime) {
@@ -99,24 +61,28 @@ public class Player {
 
                     SetAttacking(
                             PlayerConstants.ATTACK_1_ANIMATION_ID,
-                            (attackSpeed /PlayerConstants.ATTACK_1_ANIMATION_POS.length)
+                            (attackSpeed /PlayerConstants.ATTACK_1_ANIMATION_POS.length) * 1.1
                     );
 
+                    currentAttack_Speed = attackSpeed;
                     facingLeft = false;
                 } else if (keyListener.isKeyDown(KeyEvent.VK_LEFT)) {
 
                     SetAttacking(
                             PlayerConstants.ATTACK_1_ANIMATION_ID,
-                            (attackSpeed /PlayerConstants.ATTACK_1_ANIMATION_POS.length)
+                            (attackSpeed /PlayerConstants.ATTACK_1_ANIMATION_POS.length) * 1.1
                     );
 
+                    currentAttack_Speed = attackSpeed;
                     facingLeft = true;
                 }else if(keyListener.isKeyDown(KeyEvent.VK_UP)) {
 
                     SetAttacking(
                             PlayerConstants.ATTACK_UP_ANIMATION_ID,
-                            (attackSpeed * 1.5 /PlayerConstants.ATTACK_UP_ANIMATION_POS.length)
+                            (attackSpeed * 1.5 / PlayerConstants.ATTACK_UP_ANIMATION_POS.length) * 1.1
                     );
+
+                    currentAttack_Speed = attackSpeed * 1.5;
 
                 }else{
                     HandleMovement(deltaTime);
@@ -133,7 +99,7 @@ public class Player {
 
     private void HandleAttackCD(double deltaTime){
         attackingTime += deltaTime;
-        if (attackingTime>= attackSpeed){
+        if (attackingTime>= currentAttack_Speed){
             animator.changeAnimationTo(PlayerConstants.IDLE_ANIMATION_ID);
             state = Player_State.Default;
             attackingTime = 0;
@@ -212,7 +178,7 @@ public class Player {
 
         Point2D.Double movementVector = new Point2D.Double();
 
-        if(keyListener.isKeyDown(KeyEvent.VK_W)){
+        if(keyListener.isKeyDown(KeyEvent.VK_W) || keyListener.isKeyDown(KeyEvent.VK_SPACE)){
             movementVector.y -= 1.0;
         }
         if(keyListener.isKeyDown(KeyEvent.VK_S)){

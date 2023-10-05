@@ -1,5 +1,6 @@
 package com.angel.CombatPlatformer.entity.player;
 
+import com.angel.CombatPlatformer.util.Animation;
 import com.angel.CombatPlatformer.util.Rect;
 import com.angel.CombatPlatformer.window.WindowConstants;
 
@@ -119,8 +120,54 @@ public class PlayerConstants {
     };
 
 
+    //==================================================================================================================
 
+    public final static Animation IDLE_ANIMATION = new Animation(
+            IDLE_ANIMATION_PATH,
+            IDLE_ANIMATION_POS,
+            IDLE_X_OFFSET,
+            IDLE_Y_OFFSET,
+            IDLE_SCALE_FACTOR
+    );
 
+    public final static Animation RUN_ANIMATION = new Animation(
+            RUN_ANIMATION_PATH,
+            RUN_ANIMATION_POS,
+            RUN_X_OFFSET,
+            RUN_Y_OFFSET,
+            RUN_SCALE_FACTOR
+    );
+
+    public final static Animation ATTACK_1_ANIMATION = new Animation(
+            ATTACK_1_ANIMATION_PATH,
+            ATTACK_1_ANIMATION_POS,
+            ATTACK_1_X_OFFSET,
+            ATTACK_1_Y_OFFSET,
+            ATTACK_1_SCALE_FACTOR
+    );
+
+    public final static Animation ATTACK_UP_ANIMATION = new Animation(
+            ATTACK_UP_ANIMATION_PATH,
+            ATTACK_UP_ANIMATION_POS,
+            ATTACK_UP_X_OFFSET,
+            ATTACK_UP_Y_OFFSET,
+            ATTACK_UP_SCALE_FACTOR
+    );
+
+    public final static Animation JUMP_ANIMATION = new Animation(
+            JUMP_ANIMATION_PATH,
+            JUMP_ANIMATION_POS,
+            JUMP_X_OFFSET,
+            JUMP_Y_OFFSET,
+            JUMP_SCALE_FACTOR);
+
+    public final static Animation FALL_ANIMATION = new Animation(
+            FALL_ANIMATION_PATH,
+            FALL_ANIMATION_POS,
+            FALL_X_OFFSET,
+            FALL_Y_OFFSET,
+            FALL_SCALE_FACTOR
+    );
 
 
 

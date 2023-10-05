@@ -28,6 +28,25 @@ import java.util.ArrayList;
 
         }
 
+        public Animation(String path, Rect rects[], int xOffset, int yOffset, double scaleFactor  ){
+            try{
+                BufferedImage spriteSheet = ImageIO.read(new File(path));
+                for (Rect rect:rects) {
+                    frames.add(spriteSheet.getSubimage(
+                            rect.x,
+                            rect.y,
+                            rect.w,
+                            rect.h));
+                }
+                this.xOffset = xOffset;
+                this.yOffset = yOffset;
+                this.scaleFactor = scaleFactor;
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+
+        }
+
         public BufferedImage getFrame(int index){
             return frames.get(index);
         }
