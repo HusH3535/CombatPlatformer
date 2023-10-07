@@ -1,13 +1,15 @@
 package com.angel.CombatPlatformer.util;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
     public class Animation {
 
-        private ArrayList<BufferedImage> frames = new ArrayList<>();
+        private ArrayList<Image> frames = new ArrayList<>();
         public int xOffset = 0;
         public int yOffset = 0;
         public double scaleFactor = 1.0;
@@ -32,11 +34,16 @@ import java.util.ArrayList;
             try{
                 BufferedImage spriteSheet = ImageIO.read(new File(path));
                 for (Rect rect:rects) {
-                    frames.add(spriteSheet.getSubimage(
+                    BufferedImage temp;
+                    temp = (spriteSheet.getSubimage(
                             rect.x,
                             rect.y,
                             rect.w,
-                            rect.h));
+                            rect.h)
+                    );
+
+
+                    frames.add(new ImageIcon(temp).getImage());
                 }
                 this.xOffset = xOffset;
                 this.yOffset = yOffset;
@@ -47,7 +54,7 @@ import java.util.ArrayList;
 
         }
 
-        public BufferedImage getFrame(int index){
+        public Image getFrame(int index){
             return frames.get(index);
         }
 

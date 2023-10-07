@@ -8,12 +8,12 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Animator extends Component{
+public class Animator extends Component implements Monoscript{
 
 
     private Map<String, Animation> Animations = new HashMap<>();
     private Animation currentAnimation = null;
-    private BufferedImage currentFrame = null;
+    private Image currentFrame = null;
     private int currentFrameIndex = 0;
     private double defaultFrameTime = 0.15;
     private double frameTime = 0.15;
@@ -103,7 +103,7 @@ public class Animator extends Component{
         this.frameTime = frameTime;
     }
 
-    public BufferedImage getCurrentFrame() {
+    public Image getCurrentFrame() {
         return currentFrame;
     }
 
@@ -111,7 +111,7 @@ public class Animator extends Component{
         return (!Animations.isEmpty());
     }
 
-    public void setCurrentAnimationOffset(int xOffset, int yOffset) {
+    public void setCurrentAnimationOffset(int xOffset, int yOffset){
         currentAnimation.xOffset = xOffset;
         currentAnimation.yOffset = yOffset;
     }
@@ -121,8 +121,8 @@ public class Animator extends Component{
                 currentFrame,
                 (int) (x + currentAnimation.xOffset),
                 (int) (y + currentAnimation.yOffset),
-                (int) (currentFrame.getWidth() * currentAnimation.scaleFactor),
-                (int) (currentFrame.getHeight() * currentAnimation.scaleFactor),
+                (int) (currentFrame.getWidth(null) * currentAnimation.scaleFactor),
+                (int) (currentFrame.getHeight(null) * currentAnimation.scaleFactor),
                 null
         );
     }
@@ -130,10 +130,10 @@ public class Animator extends Component{
     public void RenderCurrentSpriteFlipVer(Graphics g,int x, int y){
         g.drawImage(
                 (Image) currentFrame,
-                (int) (x + currentAnimation.xOffset + currentFrame.getWidth() * currentAnimation.scaleFactor),
+                (int) (x + currentAnimation.xOffset + currentFrame.getWidth(null) * currentAnimation.scaleFactor),
                 (int) (y + currentAnimation.yOffset),
-                (int) (-currentFrame.getWidth() * currentAnimation.scaleFactor),
-                (int) (currentFrame.getHeight() * currentAnimation.scaleFactor),
+                (int) (-currentFrame.getWidth(null) * currentAnimation.scaleFactor),
+                (int) (currentFrame.getHeight(null) * currentAnimation.scaleFactor),
                 null
         );
     }
@@ -143,9 +143,9 @@ public class Animator extends Component{
         g.drawImage(
                 (Image) currentFrame,
                 (int) (x + currentAnimation.xOffset),
-                (int) (y + currentAnimation.yOffset + currentFrame.getHeight() * currentAnimation.scaleFactor),
-                (int) (currentFrame.getWidth() * currentAnimation.scaleFactor),
-                (int) (-currentFrame.getHeight() * currentAnimation.scaleFactor),
+                (int) (y + currentAnimation.yOffset + currentFrame.getHeight(null) * currentAnimation.scaleFactor),
+                (int) (currentFrame.getWidth(null) * currentAnimation.scaleFactor),
+                (int) (-currentFrame.getHeight(null) * currentAnimation.scaleFactor),
                 null
         );
     }
@@ -153,10 +153,10 @@ public class Animator extends Component{
     public void RenderCurrentSpriteFlipBoth(Graphics g,int x, int y){
         g.drawImage(
                 (Image) currentFrame,
-                (int) (x + currentAnimation.xOffset + currentFrame.getWidth() * currentAnimation.scaleFactor),
-                (int) (y + currentAnimation.yOffset + currentFrame.getHeight() * currentAnimation.scaleFactor),
-                (int) (-currentFrame.getWidth() * currentAnimation.scaleFactor),
-                (int) (-currentFrame.getHeight() * currentAnimation.scaleFactor),
+                (int) (x + currentAnimation.xOffset + currentFrame.getWidth(null) * currentAnimation.scaleFactor),
+                (int) (y + currentAnimation.yOffset + currentFrame.getHeight(null) * currentAnimation.scaleFactor),
+                (int) (-currentFrame.getWidth(null) * currentAnimation.scaleFactor),
+                (int) (-currentFrame.getHeight(null) * currentAnimation.scaleFactor),
                 null
         );
     }

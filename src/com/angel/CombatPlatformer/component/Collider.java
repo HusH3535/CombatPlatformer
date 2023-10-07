@@ -4,7 +4,7 @@ import com.angel.CombatPlatformer.util.Rect;
 
 import java.awt.*;
 
-public class Collider extends Component{
+public class Collider extends Component {
 
     public Rect ColliderBounds;
 
@@ -16,19 +16,6 @@ public class Collider extends Component{
         this.ColliderBounds = new Rect(x,y,w,h);
     }
 
-
-
-    public void update(double deltaTime) {
-
-    }
-
-    public void draw(Graphics g) {
-
-    }
-
-    public void init() {
-
-    }
 
     public boolean overlaps(Collider collider){
 

@@ -23,10 +23,10 @@ public class PlayerConstants {
     public static final Color characterColor = Color.GREEN;
 
 
-    public static double MAX_GRAVITY_VELOCITY = WindowConstants.SCREEN_UNIT;
-    public static double GRAVITY_ACCELERATION = MAX_GRAVITY_VELOCITY/2;
+    public static double MAX_GRAVITY_VELOCITY = WindowConstants.SCREEN_UNIT * 80;
+    public static double GRAVITY_ACCELERATION = MAX_GRAVITY_VELOCITY * 4 ;
 
-    public static double JUMPING_VELOCITY = -WindowConstants.SCREEN_UNIT * 0.2;
+    public static double JUMPING_VELOCITY = -WindowConstants.SCREEN_UNIT * 100;
 
 
     public static final double  STARTING_ATTACKSPEED = 0.3;
