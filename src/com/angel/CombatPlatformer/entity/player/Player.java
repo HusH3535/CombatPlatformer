@@ -1,12 +1,11 @@
 package com.angel.CombatPlatformer.entity.player;
 
 import com.angel.CombatPlatformer.component.Animator;
-import com.angel.CombatPlatformer.component.AttackManager;
+import com.angel.CombatPlatformer.component.MeleeAttackManager;
 import com.angel.CombatPlatformer.component.Health;
 import com.angel.CombatPlatformer.component.Transform;
 import com.angel.CombatPlatformer.entity.Entity;
 import com.angel.CombatPlatformer.util.Attack;
-import com.angel.CombatPlatformer.util.Rect;
 import com.angel.CombatPlatformer.util.Vector2D;
 import com.angel.CombatPlatformer.util.io.KL;
 import com.angel.CombatPlatformer.window.WindowConstants;
@@ -14,16 +13,13 @@ import com.angel.CombatPlatformer.window.WindowConstants;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class Player implements Entity {
+public class Player extends Entity {
     //private unit
     private double unit = WindowConstants.SCREEN_UNIT;
-    //Transform
-    public Transform transform = null;
     //components
     private final KL keyListener = KL.getKeyListener();
     private Player_State state = Player_State.Default;
-    private AttackManager attackManager;
-    private Health health;
+    private MeleeAttackManager attackManager;
 
 
     //animation variables
@@ -65,17 +61,10 @@ public class Player implements Entity {
                 this
         );
 
-        attackManager = new AttackManager();
+        attackManager = new MeleeAttackManager();
         attackManager.addAttack(
-                0,
-                new Attack(
-                        (int)unit * 6,
-                        (int)unit * 2,
-                        (int)unit * 9,
-                        (int)unit * 6,
-                        30,
-                        0.3
-                )
+                PlayerConstants.ATTACK_RIGHT_1_ID,
+                PlayerConstants.ATTACK_RIGHT_1
         );
 
     }
@@ -94,6 +83,7 @@ public class Player implements Entity {
             facingLeft = false;
         } else if (keyListener.isKeyDown(KeyEvent.VK_LEFT)) {
 
+            attackManager.performAttack(0, (int)transform.position.x,(int) transform.position.y);
             SetAttacking(
                     PlayerConstants.ATTACK_1_ANIMATION_ID,
                     (attackSpeed /PlayerConstants.ATTACK_1_ANIMATION_POS.length) * 1.1

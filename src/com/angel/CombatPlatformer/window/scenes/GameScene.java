@@ -1,6 +1,7 @@
 package com.angel.CombatPlatformer.window.scenes;
 
 import com.angel.CombatPlatformer.entity.Enemy.Dummy;
+import com.angel.CombatPlatformer.entity.Entity;
 import com.angel.CombatPlatformer.entity.player.Player;
 import com.angel.CombatPlatformer.util.io.KL;
 import com.angel.CombatPlatformer.window.Window;
@@ -9,6 +10,7 @@ import com.angel.CombatPlatformer.window.WindowConstants;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 
 public class GameScene extends Scene{
@@ -16,13 +18,14 @@ public class GameScene extends Scene{
 
     private int frameRate = 0;
     private String displayInfo = "";
+
+    public static ArrayList<Entity> enemies = new ArrayList<>();
     private Player player = new Player();
-    private Dummy dummy = new Dummy(player.transform);
 
 
 
     public GameScene(){
-
+        enemies.add(new Dummy(player.getTransform()));
     }
 
     @Override
@@ -31,7 +34,9 @@ public class GameScene extends Scene{
         displayInfo = String.format("%d FPS (%.3f)", frameRate,deltaTime);
 
         player.update(deltaTime);
-        dummy.update(deltaTime);
+        for (int i = 0; i < enemies.size(); i++) {
+            enemies.get(i).update(deltaTime);
+        }
 
         if(KL.getKeyListener().isKeyDown(KeyEvent.VK_ESCAPE)){
             Window.getWindow().changeState(WindowConstants.MENU_SCENE);
@@ -62,7 +67,9 @@ public class GameScene extends Scene{
 
 
 
-        dummy.draw(g);
+        for (int i = 0; i < enemies.size(); i++) {
+            enemies.get(i).draw(g);
+        }
         player.draw(g);
 
 

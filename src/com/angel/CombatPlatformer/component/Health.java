@@ -45,15 +45,18 @@ public class Health extends Component implements Monobehavior{
                 (int) unit * 6  + borderUnit,
                 (int) unit/2    + borderUnit
         );
+        this.owner = owner;
     }
 
 
     public void takeDamage(double d){
         health -= d;
-        if(health == 0){
-            System.out.println("kill this dummy");
-        }
+
         setBarFill();
+
+        if(health <= 0){
+            owner.destroy();
+        }
     }
 
     private void setBarFill(){
@@ -70,7 +73,7 @@ public class Health extends Component implements Monobehavior{
                 bar.h
         );
 
-        g.setColor(new Color(0x9A2F2F));
+        g.setColor(new Color(0xE23131));
         g.fillRect(
                 x + barFill.x,
                 y + barFill.y,

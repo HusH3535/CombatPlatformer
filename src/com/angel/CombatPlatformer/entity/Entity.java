@@ -1,16 +1,32 @@
 package com.angel.CombatPlatformer.entity;
 
+import com.angel.CombatPlatformer.component.Health;
 import com.angel.CombatPlatformer.component.Transform;
+import com.angel.CombatPlatformer.window.scenes.GameScene;
 
 import java.awt.*;
 
-public interface Entity {
+public abstract class Entity {
 
-    Transform transform = null;
+    protected Transform transform = new Transform();
+    protected Health health = null;
 
-    public void update(Double deltaTime);
+    public Transform getTransform(){
+        return transform;
+    }
 
-    public void draw(Graphics g);
+    public Health getHealth(){
+        return health;
+    }
+
+    public void destroy(){
+
+        GameScene.enemies.remove(this);
+    }
+
+    public abstract void update(Double deltaTime);
+
+    public abstract void draw(Graphics g);
 
 
 }

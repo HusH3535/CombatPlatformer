@@ -1,6 +1,7 @@
 package com.angel.CombatPlatformer.entity.player;
 
 import com.angel.CombatPlatformer.util.Animation;
+import com.angel.CombatPlatformer.util.Attack;
 import com.angel.CombatPlatformer.util.Rect;
 import com.angel.CombatPlatformer.window.WindowConstants;
 
@@ -33,10 +34,6 @@ public class PlayerConstants {
 
     //endregion
     //200px per second
-
-
-
-
 
     //region sprite variables
     //==============================================================================
@@ -174,5 +171,19 @@ public class PlayerConstants {
     //endregion
 
 
+    //region attack information
+
+    public static final int ATTACK_RIGHT_1_ID = 0;
+    public static final Attack ATTACK_RIGHT_1 = new Attack(
+            (int)WindowConstants.SCREEN_UNIT * 6,
+            (int)WindowConstants.SCREEN_UNIT * 2,
+            (int)WindowConstants.SCREEN_UNIT * 9,
+            (int)WindowConstants.SCREEN_UNIT * 6,
+            30,
+            0.3
+    );
+
+
+    //endregion
 
 }

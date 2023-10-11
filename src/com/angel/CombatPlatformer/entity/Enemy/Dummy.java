@@ -10,16 +10,12 @@ import com.angel.CombatPlatformer.window.WindowConstants;
 
 import java.awt.*;
 
-public class Dummy implements Entity {
+public class Dummy extends Entity {
 
     //Player TransformRef
     Transform playerTransform = null;
 
-    //Transform
-    Transform transform = null;
 
-    //health
-    Health health;
 
     //animation variables
     private boolean facingLeft = false;
@@ -49,8 +45,6 @@ public class Dummy implements Entity {
                 (int) - WindowConstants.SCREEN_UNIT,
                 this
         );
-
-        health.takeDamage(32);
 
     }
 
