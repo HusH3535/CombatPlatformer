@@ -1,20 +1,25 @@
-package com.angel.CombatPlatformer.entity.player;
+package com.angel.CombatPlatformer.entity.Enemy;
 
 import com.angel.CombatPlatformer.component.Animator;
+import com.angel.CombatPlatformer.component.Health;
 import com.angel.CombatPlatformer.component.Transform;
 import com.angel.CombatPlatformer.entity.Enemy.Enemy_Constants;
+import com.angel.CombatPlatformer.entity.Entity;
 import com.angel.CombatPlatformer.util.Vector2D;
 import com.angel.CombatPlatformer.window.WindowConstants;
 
 import java.awt.*;
 
-public class Dummy {
+public class Dummy implements Entity {
 
     //Player TransformRef
     Transform playerTransform = null;
 
     //Transform
     Transform transform = null;
+
+    //health
+    Health health;
 
     //animation variables
     private boolean facingLeft = false;
@@ -36,8 +41,16 @@ public class Dummy {
 
 
         animator = new Animator(0.075);
-
         animator.addAnimation(Enemy_Constants.DUMMY_IDLE_ANIMATION, Enemy_Constants.DUMMY_IDLE_ANIMATION_ID);
+
+        health = new Health(
+                100.0,
+                (int) (WindowConstants.SCREEN_UNIT * 0.4),
+                (int) - WindowConstants.SCREEN_UNIT,
+                this
+        );
+
+        health.takeDamage(32);
 
     }
 
@@ -46,13 +59,15 @@ public class Dummy {
 
     }
 
-
-    public void update(double deltaTime) {
+    @Override
+    public void update(Double deltaTime) {
         animator.update(deltaTime);
         facingLeft = playerTransform.position.x < transform.position.x;
 
     }
 
+
+    @Override
     public void draw(Graphics g) {
 
         if(animator.hasAnimations()){
@@ -63,11 +78,14 @@ public class Dummy {
             }
         }
 
-        g.setColor(Color.RED);
-        g.drawRect(
-                (int) transform.position.x,
-                (int) transform.position.y,
-                (int) transform.size.x,
-                (int) transform.size.y);
+//        g.setColor(Color.RED);
+//        g.drawRect(
+//                (int) transform.position.x,
+//                (int) transform.position.y,
+//                (int) transform.size.x,
+//                (int) transform.size.y
+//        );
+
+        health.drawHealthBar(g, (int) transform.position.x, (int) transform.position.y);
     }
 }

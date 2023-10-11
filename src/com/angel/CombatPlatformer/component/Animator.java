@@ -4,11 +4,10 @@ import com.angel.CombatPlatformer.util.Animation;
 import com.angel.CombatPlatformer.util.Rect;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Animator extends Component implements Monoscript{
+public class Animator extends Component implements Monobehavior {
 
 
     private Map<String, Animation> Animations = new HashMap<>();

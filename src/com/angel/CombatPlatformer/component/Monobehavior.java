@@ -2,7 +2,7 @@ package com.angel.CombatPlatformer.component;
 
 import java.awt.*;
 
-public interface Monoscript {
+public interface Monobehavior {
 
     public void init();
 

@@ -1,21 +1,14 @@
 package com.angel.CombatPlatformer.window.scenes;
 
-import com.angel.CombatPlatformer.entity.player.Dummy;
+import com.angel.CombatPlatformer.entity.Enemy.Dummy;
 import com.angel.CombatPlatformer.entity.player.Player;
 import com.angel.CombatPlatformer.util.io.KL;
 import com.angel.CombatPlatformer.window.Window;
 import com.angel.CombatPlatformer.window.WindowConstants;
 
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.awt.image.VolatileImage;
-import java.awt.image.WritableRaster;
-import java.io.File;
-import java.io.IOException;
 
 
 public class GameScene extends Scene{

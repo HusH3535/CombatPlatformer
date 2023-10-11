@@ -1,7 +1,12 @@
 package com.angel.CombatPlatformer.entity.player;
 
 import com.angel.CombatPlatformer.component.Animator;
+import com.angel.CombatPlatformer.component.AttackManager;
+import com.angel.CombatPlatformer.component.Health;
 import com.angel.CombatPlatformer.component.Transform;
+import com.angel.CombatPlatformer.entity.Entity;
+import com.angel.CombatPlatformer.util.Attack;
+import com.angel.CombatPlatformer.util.Rect;
 import com.angel.CombatPlatformer.util.Vector2D;
 import com.angel.CombatPlatformer.util.io.KL;
 import com.angel.CombatPlatformer.window.WindowConstants;
@@ -9,12 +14,17 @@ import com.angel.CombatPlatformer.window.WindowConstants;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class Player {
+public class Player implements Entity {
+    //private unit
+    private double unit = WindowConstants.SCREEN_UNIT;
     //Transform
     public Transform transform = null;
     //components
     private final KL keyListener = KL.getKeyListener();
     private Player_State state = Player_State.Default;
+    private AttackManager attackManager;
+    private Health health;
+
 
     //animation variables
     private boolean facingLeft = false;
@@ -48,15 +58,36 @@ public class Player {
         animator.addAnimation(PlayerConstants.JUMP_ANIMATION,       PlayerConstants.JUMP_ANIMATION_ID);
         animator.addAnimation(PlayerConstants.FALL_ANIMATION,       PlayerConstants.FALL_ANIMATION_ID);
 
+        health = new Health(
+                100.0,
+                (int) (unit * 0.4),
+                (int) - unit,
+                this
+        );
+
+        attackManager = new AttackManager();
+        attackManager.addAttack(
+                0,
+                new Attack(
+                        (int)unit * 6,
+                        (int)unit * 2,
+                        (int)unit * 9,
+                        (int)unit * 6,
+                        30,
+                        0.3
+                )
+        );
+
     }
 
     private void HandleInput(double deltaTime) {
 
         if (keyListener.isKeyDown(KeyEvent.VK_RIGHT)) {
-
+            attackManager.performAttack(0, (int)transform.position.x,(int) transform.position.y);
             SetAttacking(
                     PlayerConstants.ATTACK_1_ANIMATION_ID,
                     (attackSpeed /PlayerConstants.ATTACK_1_ANIMATION_POS.length) * 1.1
+
             );
 
             currentAttack_Speed = attackSpeed;
@@ -155,8 +186,6 @@ public class Player {
         y_Velocity += PlayerConstants.GRAVITY_ACCELERATION * deltaTime;
         y_Velocity = Math.min(y_Velocity, PlayerConstants.MAX_GRAVITY_VELOCITY);
 
-        System.out.println(y_Velocity);
-
         transform.position.y += y_Velocity * deltaTime;
     }
 
@@ -192,10 +221,13 @@ public class Player {
             }
         }
 
+        health.drawHealthBar(g, (int) transform.position.x, (int) transform.position.y);
+        attackManager.draw(g);
 
     }
 
-    public void update(double deltaTime){
+    @Override
+    public void update(Double deltaTime){
 
         UpdateMovementVector();
 
@@ -208,6 +240,8 @@ public class Player {
 
         }
 
+
         animator.update(deltaTime);
+        attackManager.update(deltaTime);
     }
 }
