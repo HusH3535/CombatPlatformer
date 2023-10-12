@@ -32,6 +32,7 @@ public class Player extends Entity {
 
 
     //attacking variables
+    private double attack_dmg = PlayerConstants.ATTACK_BASE_DMG;
     private double attackingTime = 0;
     private double attackSpeed = PlayerConstants.STARTING_ATTACKSPEED;
     private double currentAttack_Speed = attackSpeed;
@@ -62,17 +63,18 @@ public class Player extends Entity {
         );
 
         attackManager = new MeleeAttackManager();
-        attackManager.addAttack(
-                PlayerConstants.ATTACK_RIGHT_1_ID,
-                PlayerConstants.ATTACK_RIGHT_1
-        );
 
     }
 
     private void HandleInput(double deltaTime) {
 
         if (keyListener.isKeyDown(KeyEvent.VK_RIGHT)) {
-            attackManager.performAttack(0, (int)transform.position.x,(int) transform.position.y);
+            attackManager.performAttack(
+                    PlayerConstants.ATTACK_RIGHT_1,
+                    (int)transform.position.x,
+                    (int) transform.position.y,
+                    attack_dmg
+            );
             SetAttacking(
                     PlayerConstants.ATTACK_1_ANIMATION_ID,
                     (attackSpeed /PlayerConstants.ATTACK_1_ANIMATION_POS.length) * 1.1
@@ -83,7 +85,12 @@ public class Player extends Entity {
             facingLeft = false;
         } else if (keyListener.isKeyDown(KeyEvent.VK_LEFT)) {
 
-            attackManager.performAttack(0, (int)transform.position.x,(int) transform.position.y);
+            attackManager.performAttack(
+                    PlayerConstants.ATTACK_LEFT_1,
+                    (int)transform.position.x,
+                    (int) transform.position.y,
+                    attack_dmg
+            );
             SetAttacking(
                     PlayerConstants.ATTACK_1_ANIMATION_ID,
                     (attackSpeed /PlayerConstants.ATTACK_1_ANIMATION_POS.length) * 1.1
@@ -92,6 +99,13 @@ public class Player extends Entity {
             currentAttack_Speed = attackSpeed;
             facingLeft = true;
         }else if(keyListener.isKeyDown(KeyEvent.VK_UP)) {
+
+            attackManager.performAttack(
+                    PlayerConstants.ATTACK_UP_1,
+                    (int)transform.position.x,
+                    (int) transform.position.y,
+                    attack_dmg
+            );
 
             SetAttacking(
                     PlayerConstants.ATTACK_UP_ANIMATION_ID,

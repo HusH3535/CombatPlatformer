@@ -30,8 +30,6 @@ public class PlayerConstants {
     public static double JUMPING_VELOCITY = -WindowConstants.SCREEN_UNIT * 100;
 
 
-    public static final double  STARTING_ATTACKSPEED = 0.3;
-
     //endregion
     //200px per second
 
@@ -173,14 +171,35 @@ public class PlayerConstants {
 
     //region attack information
 
-    public static final int ATTACK_RIGHT_1_ID = 0;
+
+
+    public static final double  STARTING_ATTACKSPEED = 0.3;
+    public static double ATTACK_BASE_DMG = 10;
+
     public static final Attack ATTACK_RIGHT_1 = new Attack(
-            (int)WindowConstants.SCREEN_UNIT * 6,
+            (int) PLAYER_WIDTH,
             (int)WindowConstants.SCREEN_UNIT * 2,
             (int)WindowConstants.SCREEN_UNIT * 9,
             (int)WindowConstants.SCREEN_UNIT * 6,
-            30,
+            1,
             0.3
+    );
+
+    public static final Attack ATTACK_LEFT_1 = new Attack(
+            -(int) WindowConstants.SCREEN_UNIT * 9,
+            (int)WindowConstants.SCREEN_UNIT * 2,
+            (int) WindowConstants.SCREEN_UNIT * 9,
+            (int)WindowConstants.SCREEN_UNIT * 6,
+            1,
+            0.3
+    );
+    public static final Attack ATTACK_UP_1 = new Attack(
+            (int) WindowConstants.SCREEN_UNIT* 2,
+            -(int)WindowConstants.SCREEN_UNIT * 9,
+            (int) WindowConstants.SCREEN_UNIT * 9,
+            (int)WindowConstants.SCREEN_UNIT * 9 + PlayerConstants.PLAYER_HEIGHT,
+            1.5,
+            0.5
     );
 
 

@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 public class MeleeAttackManager extends Component implements Monobehavior{
 
-    public boolean Renderhitbox = true;
-    private ArrayList<Attack> Attacks;
+    public boolean renderHitbox = true;
     private double activeCoolDown;
     private Attack activeAttack;
+    private double character_Damage;
     private int x, y;
 
     ArrayList<Entity> enemiesHit = new ArrayList<>();
@@ -21,29 +21,18 @@ public class MeleeAttackManager extends Component implements Monobehavior{
 
 
     public MeleeAttackManager(){
-        Attacks = new ArrayList<>();
         activeCoolDown = 0;
     }
 
-    public void performAttack(int attack_Id, int x, int y){
-        activeAttack = Attacks.get(attack_Id);
+    public void performAttack(Attack attack, int x, int y,double attack_dmg){
+        character_Damage = attack_dmg;
+        activeAttack = attack;
         activeCoolDown = activeAttack.getCooldown();
         this.x = activeAttack.getxOffSet() + x;
         this.y = activeAttack.getyOffSet() + y;
 
     }
 
-    public void performAttackFlip(int attack_Id, int x, int y){
-        activeAttack = Attacks.get(attack_Id);
-        activeCoolDown = activeAttack.getCooldown();
-        this.x = activeAttack.getxOffSet() + x + activeAttack.getWidth();
-        this.y = activeAttack.getyOffSet() + y;
-
-    }
-
-    public void addAttack(int attack_Id, Attack attack) {
-        Attacks.add(attack_Id, attack);
-    }
 
 
     @Override
@@ -83,7 +72,7 @@ public class MeleeAttackManager extends Component implements Monobehavior{
             );
 
             if(attackHB.overlaps(currentEnemyCollider)){
-                currentEnemy.getHealth().takeDamage(activeAttack.getDamage());
+                currentEnemy.getHealth().takeDamage(activeAttack.getDamageMultiplier() * character_Damage);
                 enemiesHit.add(currentEnemy);
             }
 
@@ -93,7 +82,7 @@ public class MeleeAttackManager extends Component implements Monobehavior{
     @Override
     public void draw(Graphics g) {
 
-        if (Renderhitbox && activeAttack!= null){
+        if (renderHitbox && activeAttack!= null){
             Rect gizmo = new Rect(x, y, activeAttack.getWidth(), activeAttack.getHeight());
             g.setColor(Color.red);
             g.drawRect(gizmo.x, gizmo.y, gizmo.w, gizmo.h);
