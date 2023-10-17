@@ -99,9 +99,10 @@ public class Player extends Entity {
             currentAttack_Speed = attackSpeed;
             facingLeft = true;
         }else if(keyListener.isKeyDown(KeyEvent.VK_UP)) {
+            Attack attack = facingLeft? PlayerConstants.ATTACK_UP_2: PlayerConstants.ATTACK_UP_1;
 
             attackManager.performAttack(
-                    PlayerConstants.ATTACK_UP_1,
+                    attack,
                     (int)transform.position.x,
                     (int) transform.position.y,
                     attack_dmg

@@ -11,7 +11,7 @@ import java.io.IOException;
 public class WindowConstants {
 
     private static final String BACKGROUND_PATH = "src/com/angel/CombatPlatformer/assets/Background/Background.png";
-    public static int SCREEN_WIDTH = 1920/2;
+    public static int SCREEN_WIDTH = 1440;
     public static int SCREEN_HEIGHT = (int) (SCREEN_WIDTH * 0.5625);
 
     public static double SCREEN_UNIT = SCREEN_WIDTH * 0.01;

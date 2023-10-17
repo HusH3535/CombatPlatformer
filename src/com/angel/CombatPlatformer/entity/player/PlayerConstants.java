@@ -176,30 +176,78 @@ public class PlayerConstants {
     public static final double  STARTING_ATTACKSPEED = 0.3;
     public static double ATTACK_BASE_DMG = 10;
 
+    private static final Rect[] attackRight1_HB = {
+        new Rect(
+                (int) PLAYER_WIDTH,
+                (int)WindowConstants.SCREEN_UNIT * 2,
+                (int)WindowConstants.SCREEN_UNIT * 9,
+                (int)WindowConstants.SCREEN_UNIT * 6
+        )
+    };
+
+    private static final Rect[] attackLeft1_HB = {
+            new Rect(
+                    -(int) WindowConstants.SCREEN_UNIT * 9,
+                    (int)WindowConstants.SCREEN_UNIT * 2,
+                    (int) WindowConstants.SCREEN_UNIT * 9,
+                    (int)WindowConstants.SCREEN_UNIT * 6
+            )
+    };
+
+    private static final Rect[] attackUp1_HB = {
+            new Rect(
+                    -(int) WindowConstants.SCREEN_UNIT * 4,
+                    -(int)WindowConstants.SCREEN_UNIT * 8,
+                    (int) WindowConstants.SCREEN_UNIT * 18,
+                    (int)WindowConstants.SCREEN_UNIT * 4
+            ),
+            new Rect(
+                    (int) ( PLAYER_WIDTH + WindowConstants.SCREEN_UNIT * 2),
+                    -(int)WindowConstants.SCREEN_UNIT * 7,
+                    (int) WindowConstants.SCREEN_UNIT * 7,
+                    (int)(PlayerConstants.PLAYER_HEIGHT * 1.5)
+            )
+    };
+
+    private static final Rect[] attackUp2_HB = {
+            new Rect(
+                    -(int) WindowConstants.SCREEN_UNIT * 4,
+                    -(int)WindowConstants.SCREEN_UNIT * 8,
+                    (int) WindowConstants.SCREEN_UNIT * 18,
+                    (int)WindowConstants.SCREEN_UNIT * 4
+            ),
+            new Rect(
+                    -(int)( PLAYER_WIDTH + WindowConstants.SCREEN_UNIT * 2),
+                    -(int)WindowConstants.SCREEN_UNIT * 7,
+                    (int) WindowConstants.SCREEN_UNIT * 7,
+                    (int)(PlayerConstants.PLAYER_HEIGHT * 1.5)
+            )
+    };
+
+
+
+
+
     public static final Attack ATTACK_RIGHT_1 = new Attack(
-            (int) PLAYER_WIDTH,
-            (int)WindowConstants.SCREEN_UNIT * 2,
-            (int)WindowConstants.SCREEN_UNIT * 9,
-            (int)WindowConstants.SCREEN_UNIT * 6,
             1,
-            0.3
+            0.3,
+            attackRight1_HB
     );
 
     public static final Attack ATTACK_LEFT_1 = new Attack(
-            -(int) WindowConstants.SCREEN_UNIT * 9,
-            (int)WindowConstants.SCREEN_UNIT * 2,
-            (int) WindowConstants.SCREEN_UNIT * 9,
-            (int)WindowConstants.SCREEN_UNIT * 6,
             1,
-            0.3
+            0.3,
+            attackLeft1_HB
     );
     public static final Attack ATTACK_UP_1 = new Attack(
-            (int) WindowConstants.SCREEN_UNIT* 2,
-            -(int)WindowConstants.SCREEN_UNIT * 9,
-            (int) WindowConstants.SCREEN_UNIT * 9,
-            (int)WindowConstants.SCREEN_UNIT * 9 + PlayerConstants.PLAYER_HEIGHT,
             1.5,
-            0.5
+            0.5,
+            attackUp1_HB
+    );
+    public static final Attack ATTACK_UP_2 = new Attack(
+            1.5,
+            0.5,
+            attackUp2_HB
     );
 
 
