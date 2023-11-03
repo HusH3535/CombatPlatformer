@@ -1,5 +1,6 @@
 package com.angel.CombatPlatformer.window.scenes;
 
+import com.angel.CombatPlatformer.entity.Enemy.Daemon;
 import com.angel.CombatPlatformer.entity.Enemy.Dummy;
 import com.angel.CombatPlatformer.entity.Entity;
 import com.angel.CombatPlatformer.entity.player.Player;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 
 public class GameScene extends Scene{
 
+    private double spawnCD = 0;
 
     private int frameRate = 0;
     private String displayInfo = "";
@@ -30,6 +32,8 @@ public class GameScene extends Scene{
 
     @Override
     public void update(double deltaTime) {
+        spawnCD -= deltaTime;
+
         frameRate = (int) (1/deltaTime);
         displayInfo = String.format("%d FPS (%.3f)", frameRate,deltaTime);
 
@@ -40,6 +44,11 @@ public class GameScene extends Scene{
 
         if(KL.getKeyListener().isKeyDown(KeyEvent.VK_ESCAPE)){
             Window.getWindow().changeState(WindowConstants.MENU_SCENE);
+        }
+
+        if(KL.getKeyListener().isKeyDown(KeyEvent.VK_E) && spawnCD <= 0){
+            spawnCD = .1;
+            enemies.add(new Daemon(player.getTransform()));
         }
 
     }

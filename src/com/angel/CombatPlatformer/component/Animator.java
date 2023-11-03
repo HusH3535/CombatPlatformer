@@ -3,6 +3,7 @@ package com.angel.CombatPlatformer.component;
 import com.angel.CombatPlatformer.util.Animation;
 import com.angel.CombatPlatformer.util.Rect;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +13,7 @@ public class Animator extends Component implements Monobehavior {
 
     private Map<String, Animation> Animations = new HashMap<>();
     private Animation currentAnimation = null;
-    private Image currentFrame = null;
+    private ImageIcon currentFrame = null;
     private int currentFrameIndex = 0;
     private double defaultFrameTime = 0.15;
     private double frameTime = 0.15;
@@ -102,7 +103,7 @@ public class Animator extends Component implements Monobehavior {
         this.frameTime = frameTime;
     }
 
-    public Image getCurrentFrame() {
+    public ImageIcon getCurrentFrame() {
         return currentFrame;
     }
 
@@ -117,22 +118,22 @@ public class Animator extends Component implements Monobehavior {
 
     public void RenderCurrentSprite(Graphics g,int x, int y){
         g.drawImage(
-                currentFrame,
+                currentFrame.getImage(),
                 (int) (x + currentAnimation.xOffset),
                 (int) (y + currentAnimation.yOffset),
-                (int) (currentFrame.getWidth(null) * currentAnimation.scaleFactor),
-                (int) (currentFrame.getHeight(null) * currentAnimation.scaleFactor),
+                (int) (currentFrame.getIconWidth() * currentAnimation.scaleFactor),
+                (int) (currentFrame.getIconHeight() * currentAnimation.scaleFactor),
                 null
         );
     }
 
     public void RenderCurrentSpriteFlipVer(Graphics g,int x, int y){
         g.drawImage(
-                (Image) currentFrame,
-                (int) (x + currentAnimation.xOffset + currentFrame.getWidth(null) * currentAnimation.scaleFactor),
+                currentFrame.getImage(),
+                (int) (x + currentAnimation.xOffset + currentFrame.getIconWidth() * currentAnimation.scaleFactor),
                 (int) (y + currentAnimation.yOffset),
-                (int) (-currentFrame.getWidth(null) * currentAnimation.scaleFactor),
-                (int) (currentFrame.getHeight(null) * currentAnimation.scaleFactor),
+                (int) (-currentFrame.getIconWidth() * currentAnimation.scaleFactor),
+                (int) (currentFrame.getIconHeight() * currentAnimation.scaleFactor),
                 null
         );
     }
@@ -140,22 +141,22 @@ public class Animator extends Component implements Monobehavior {
 
     public void RenderCurrentSpriteFlipHor(Graphics g,int x, int y){
         g.drawImage(
-                (Image) currentFrame,
+                currentFrame.getImage(),
                 (int) (x + currentAnimation.xOffset),
-                (int) (y + currentAnimation.yOffset + currentFrame.getHeight(null) * currentAnimation.scaleFactor),
-                (int) (currentFrame.getWidth(null) * currentAnimation.scaleFactor),
-                (int) (-currentFrame.getHeight(null) * currentAnimation.scaleFactor),
+                (int) (y + currentAnimation.yOffset + currentFrame.getIconHeight() * currentAnimation.scaleFactor),
+                (int) (currentFrame.getIconWidth() * currentAnimation.scaleFactor),
+                (int) (-currentFrame.getIconHeight() * currentAnimation.scaleFactor),
                 null
         );
     }
 
     public void RenderCurrentSpriteFlipBoth(Graphics g,int x, int y){
         g.drawImage(
-                (Image) currentFrame,
-                (int) (x + currentAnimation.xOffset + currentFrame.getWidth(null) * currentAnimation.scaleFactor),
-                (int) (y + currentAnimation.yOffset + currentFrame.getHeight(null) * currentAnimation.scaleFactor),
-                (int) (-currentFrame.getWidth(null) * currentAnimation.scaleFactor),
-                (int) (-currentFrame.getHeight(null) * currentAnimation.scaleFactor),
+                currentFrame.getImage(),
+                (int) (x + currentAnimation.xOffset + currentFrame.getIconWidth() * currentAnimation.scaleFactor),
+                (int) (y + currentAnimation.yOffset + currentFrame.getIconHeight() * currentAnimation.scaleFactor),
+                (int) (-currentFrame.getIconWidth() * currentAnimation.scaleFactor),
+                (int) (-currentFrame.getIconHeight() * currentAnimation.scaleFactor),
                 null
         );
     }

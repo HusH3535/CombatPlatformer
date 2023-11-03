@@ -232,6 +232,11 @@ public class Player extends Entity {
     }
 
     @Override
+    public void takeDamage(double d) {
+        health.takeDamage(d);
+    }
+
+    @Override
     public void update(Double deltaTime){
 
         UpdateMovementVector();

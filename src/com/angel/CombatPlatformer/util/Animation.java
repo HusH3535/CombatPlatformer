@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
     public class Animation {
 
-        private ArrayList<Image> frames = new ArrayList<>();
+        private ArrayList<ImageIcon> frames = new ArrayList<>();
         public int xOffset = 0;
         public int yOffset = 0;
         public double scaleFactor = 1.0;
@@ -18,11 +18,12 @@ import java.util.ArrayList;
             try{
                 BufferedImage spriteSheet = ImageIO.read(new File(path));
                 for (Rect rect:rects) {
-                    frames.add(spriteSheet.getSubimage(
+                    ImageIcon ImageIcon = new ImageIcon(spriteSheet.getSubimage(
                             rect.x,
                             rect.y,
                             rect.w,
                             rect.h));
+                    frames.add(ImageIcon);
                 }
             }catch(Exception e){
                 e.printStackTrace();
@@ -34,16 +35,12 @@ import java.util.ArrayList;
             try{
                 BufferedImage spriteSheet = ImageIO.read(new File(path));
                 for (Rect rect:rects) {
-                    BufferedImage temp;
-                    temp = (spriteSheet.getSubimage(
+                    ImageIcon ImageIcon = new ImageIcon(spriteSheet.getSubimage(
                             rect.x,
                             rect.y,
                             rect.w,
-                            rect.h)
-                    );
-
-
-                    frames.add(new ImageIcon(temp).getImage());
+                            rect.h));
+                    frames.add(ImageIcon);
                 }
                 this.xOffset = xOffset;
                 this.yOffset = yOffset;
@@ -54,7 +51,7 @@ import java.util.ArrayList;
 
         }
 
-        public Image getFrame(int index){
+        public ImageIcon getFrame(int index){
             return frames.get(index);
         }
 

@@ -79,7 +79,7 @@ public class MeleeAttackManager extends Component implements Monobehavior{
 
             for (Collider hb : attackHB) {
                 if(hb.overlaps(currentEnemyCollider)){
-                    currentEnemy.getHealth().takeDamage(activeAttack.getDamageMultiplier() * character_Damage);
+                    currentEnemy.takeDamage(activeAttack.getDamageMultiplier() * character_Damage);
                     enemiesHit.add(currentEnemy);
                 }
             }

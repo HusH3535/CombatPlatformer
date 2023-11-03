@@ -47,11 +47,16 @@ public class Enemy_Constants {
     public final static String DUMMY_ATTACK_UP_ANIMATION_ID    = "AttackUp";
     public final static String DUMMY_JUMP_ANIMATION_ID       = "Jump";
     public final static String DUMMY_FALL_ANIMATION_ID       = "FALL";
+    public final static String DUMMY_HURT_ANIMATION_ID       = "HURT";
 
-    public final static int DUMMY_IDLE_X_OFFSET = (int) (- 3 * WindowConstants.SCREEN_UNIT);
-    public final static int DUMMY_IDLE_Y_OFFSET = (int) (- 2.2  * WindowConstants.SCREEN_UNIT);
-    public final static double DUMMY_IDLE_SCALE_FACTOR =   WindowConstants.SCREEN_UNIT * .25 ;
+    public final static String DUMMY_DEATH_ANIMATION_ID       = "DEATH";
+
+    public final static int DUMMY_X_OFFSET = (int) (- 3 * WindowConstants.SCREEN_UNIT);
+    public final static int DUMMY_Y_OFFSET = (int) (- 2.2  * WindowConstants.SCREEN_UNIT);
+    public final static double DUMMY_SCALE_FACTOR =   WindowConstants.SCREEN_UNIT * .25 ;
     public final static String DUMMY_IDLE_ANIMATION_PATH = "src/com/angel/CombatPlatformer/assets/dummy/Dummy_Idle.png";
+
+    public final static String DUMMY_HURT_ANIMATION_PATH = "src/com/angel/CombatPlatformer/assets/dummy/Dummy_Hit.png";
     public final static Rect[] DUMMY_IDLE_ANIMATION_POS = {
             new Rect(48*0,0,48,48),
             new Rect(48*1,0,48,48),
@@ -68,8 +73,23 @@ public class Enemy_Constants {
     public final static Animation DUMMY_IDLE_ANIMATION = new Animation(
             DUMMY_IDLE_ANIMATION_PATH,
             DUMMY_IDLE_ANIMATION_POS,
-            DUMMY_IDLE_X_OFFSET,
-            DUMMY_IDLE_Y_OFFSET,
-            DUMMY_IDLE_SCALE_FACTOR
+            DUMMY_X_OFFSET,
+            DUMMY_Y_OFFSET,
+            DUMMY_SCALE_FACTOR
+    );
+
+    public final static Rect[] DUMMY_HURT_ANIMATION_POS = {
+            new Rect(48*0,0,48,48),
+            new Rect(48*1,0,48,48),
+            new Rect(48*2,0,48,48),
+            new Rect(48*3,0,48,48)
+    };
+
+    public final static Animation DUMMY_HURT_ANIMATION = new Animation(
+            DUMMY_HURT_ANIMATION_PATH,
+            DUMMY_HURT_ANIMATION_POS,
+            DUMMY_X_OFFSET,
+            DUMMY_Y_OFFSET,
+            DUMMY_SCALE_FACTOR
     );
 }

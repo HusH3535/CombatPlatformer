@@ -21,12 +21,13 @@ public abstract class Entity {
 
     public void destroy(){
 
-        GameScene.enemies.remove(this);
     }
 
     public abstract void update(Double deltaTime);
 
     public abstract void draw(Graphics g);
+
+    public abstract void takeDamage(double d);
 
 
 }
